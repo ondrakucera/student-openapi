@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
     title: Students
-    description: Example REST API for working with students, as created for DevFest.cz 2019
+    description: Example REST API for working with students
     version: 1.0.0-SNAPSHOT
 paths:
     /students:
@@ -100,12 +100,26 @@ paths:
                     description: Description
 components:
     schemas:
+        Gender:
+            type: string
+            enum:
+                - F
+                - M
+        House:
+            type: string
+            enum:
+                - GRYFFINDOR
+                - HUFFLEPUFF
+                - RAVENCLAW
+                - SLYTHERIN
         Student:
+            type: object
             required:
                 - firstName
                 - lastName
+                - gender
+                - house
                 - year
-            type: object
             properties:
                 id:
                     type: integer
@@ -117,13 +131,23 @@ components:
                 lastName:
                     type: string
                     description: Last name of the student
+                gender:
+                    $ref: '#/components/schemas/Gender'
+                house:
+                    $ref: '#/components/schemas/House'
                 year:
-                    maximum: 7
-                    minimum: 1
-                    type: integer
-                    description: Year the student currently is in
-                    format: int32
+                    $ref: '#/components/schemas/Year'
             description: Student
+        Year:
+            type: string
+            enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                - 6
+                - 7
     parameters:
         studentId:
             name: studentId
