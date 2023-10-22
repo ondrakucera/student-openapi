@@ -116,9 +116,19 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/students.yaml</inputSpec>
+							<apiPackage>ondra.students.restapi.controller</apiPackage>
+							<cleanupOutput>true</cleanupOutput>
 							<generatorName>spring</generatorName>
+							<inputSpec>${project.basedir}/src/main/resources/students.yaml</inputSpec>
+							<modelNameSuffix>Dto</modelNameSuffix>
+							<modelPackage>ondra.students.restapi.dto</modelPackage>
+							<strictSpec>true</strictSpec>
 							<configOptions>
+								<delegatePattern>true</delegatePattern>
+								<interfaceOnly>true</interfaceOnly>
+								<legacyDiscriminatorBehavior>false</legacyDiscriminatorBehavior>
+								<useJakartaEe>false</useJakartaEe>
+								<useSpringBoot3>false</useSpringBoot3>
 							</configOptions>
 						</configuration>
 					</execution>
