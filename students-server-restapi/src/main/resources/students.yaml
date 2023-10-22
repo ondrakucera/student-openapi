@@ -4,6 +4,27 @@ info:
     description: Example REST API for working with students
     version: 1.0.0-SNAPSHOT
 paths:
+    /codebooks/{codebookCode}:
+        get:
+            summary: Obtains a list of items of a codebook
+            description: Obtains a list of `CodebookItem`s. The list is sorted by `order`.
+            operationId: getCodebookItems
+            parameters:
+                -   name: codebookCode
+                    in: path
+                    description: Codebook code
+                    required: true
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: Successful response
+                    content:
+                        'application/json':
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/CodebookItem'
     /students:
         get:
             summary: Obtains a list of students
@@ -100,6 +121,24 @@ paths:
                     description: Description
 components:
     schemas:
+        CodebookItem:
+            type: object
+            required:
+                - code
+                - names
+                - order
+            properties:
+                code:
+                    type: string
+                    description: Code
+                names:
+                    type: object
+                    description: Map of (language code, codebook item localization) pairs
+                    additionalProperties:
+                        type: string
+                order:
+                    description: Order of the item within all items of the codebook
+                    type: integer
         Gender:
             type: string
             enum:
