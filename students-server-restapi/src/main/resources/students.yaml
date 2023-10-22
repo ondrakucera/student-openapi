@@ -1,0 +1,143 @@
+openapi: 3.0.1
+info:
+    title: Students
+    description: Example REST API for working with students, as created for DevFest.cz 2019
+    version: 1.0.0-SNAPSHOT
+paths:
+    /students:
+        get:
+            summary: Obtains a list of students
+            description: Obtains a list of `Student`s. The list is sorted by `lastName`, then by `firstName`, and then by `year`.
+            operationId: getStudents
+            responses:
+                200:
+                    description: Successful response
+                    content:
+                        'application/json':
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Student'
+        post:
+            summary: Creates a student
+            description: Creates a `Student`.
+            operationId: postStudent
+            requestBody:
+                description: Student
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Student'
+                required: true
+            responses:
+                200:
+                    description: Successful response
+                    content:
+                        'application/json':
+                            schema:
+                                type: integer
+                                format: int64
+            x-codegen-request-body-name: student
+    /students/{studentId}:
+        get:
+            summary: Obtains a student
+            description: Obtains a `Student` by its id.
+            operationId: getStudent
+            parameters:
+                -   name: studentId
+                    in: path
+                    description: Student id
+                    required: true
+                    schema:
+                        type: integer
+                        format: int64
+            responses:
+                200:
+                    description: Successful response
+                    content:
+                        'application/json':
+                            schema:
+                                $ref: '#/components/schemas/Student'
+                404:
+                    description: When the student cannot be found
+        put:
+            summary: Saves a student
+            description: Saves a `Student`.
+            operationId: putStudent
+            parameters:
+                -   name: studentId
+                    in: path
+                    description: Student id
+                    required: true
+                    schema:
+                        type: integer
+                        format: int64
+            requestBody:
+                description: Student
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Student'
+                required: true
+            responses:
+                204:
+                    description: Successful response
+            x-codegen-request-body-name: student
+        delete:
+            summary: Deletes a student
+            description: Deletes a `Student`.
+            operationId: deleteStudent
+            parameters:
+                -   name: studentId
+                    in: path
+                    description: Student id
+                    required: true
+                    schema:
+                        type: integer
+                        format: int64
+            responses:
+                204:
+                    description: Description
+components:
+    schemas:
+        Student:
+            required:
+                - firstName
+                - lastName
+                - year
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: Id
+                    format: int64
+                firstName:
+                    type: string
+                    description: First name of the student
+                lastName:
+                    type: string
+                    description: Last name of the student
+                year:
+                    maximum: 7
+                    minimum: 1
+                    type: integer
+                    description: Year the student currently is in
+                    format: int32
+            description: Student
+    parameters:
+        studentId:
+            name: studentId
+            in: path
+            description: Student id
+            required: true
+            schema:
+                type: integer
+                format: int64
+    requestBodies:
+        student:
+            description: Student
+            content:
+                'application/json':
+                    schema:
+                        $ref: '#/components/schemas/Student'
+            required: true
