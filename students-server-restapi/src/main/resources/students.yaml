@@ -28,7 +28,7 @@ paths:
     /students:
         get:
             summary: Obtains a list of students
-            description: Obtains a list of `Student`s. The list is sorted by `lastName`, then by `firstName`, and then by `year`.
+            description: Obtains a list of `Student`s. The list is sorted by `lastName` and then by `firstName`.
             operationId: getStudents
             responses:
                 200:
