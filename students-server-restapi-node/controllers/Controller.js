@@ -13,7 +13,7 @@ class Controller {
     */
     response.status(payload.code || 200);
     const responsePayload = payload.payload !== undefined ? payload.payload : payload;
-    if (responsePayload instanceof Object) {
+    if (responsePayload instanceof Object || typeof responsePayload === 'number') {
       response.json(responsePayload);
     } else {
       response.end(responsePayload);
