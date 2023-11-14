@@ -8,7 +8,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const { OpenApiValidator } = require('express-openapi-validator');
+const OpenApiValidator = require('express-openapi-validator');
 const logger = require('./logger');
 const config = require('./config');
 
@@ -49,25 +49,24 @@ class ExpressServer {
   }
 
   launch() {
-    new OpenApiValidator({
+    const validator = OpenApiValidator.middleware({
       apiSpec: this.openApiPath,
       operationHandlers: path.join(__dirname),
       fileUploader: { dest: config.FILE_UPLOAD_PATH },
-    }).install(this.app)
-      .catch(e => console.log(e))
-      .then(() => {
-        // eslint-disable-next-line no-unused-vars
-        this.app.use((err, req, res, next) => {
-          // format errors
-          res.status(err.status || 500).json({
-            message: err.message || err,
-            errors: err.errors || '',
-          });
-        });
+    });
+    this.app.use(validator);
 
-        http.createServer(this.app).listen(this.port);
-        console.log(`Listening on port ${this.port}`);
+    // eslint-disable-next-line no-unused-vars
+    this.app.use((err, req, res, next) => {
+      // format errors
+      res.status(err.status || 500).json({
+        message: err.message || err,
+        errors: err.errors || '',
       });
+    });
+
+    http.createServer(this.app).listen(this.port);
+    console.log(`Listening on port ${this.port}`);
   }
 
 
